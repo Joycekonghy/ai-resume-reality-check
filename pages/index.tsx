@@ -11,6 +11,11 @@ export default function Home() {
   const [showPremium, setShowPremium] = useState(false);
   const [rebuiltResume, setRebuiltResume] = useState<any>(null);
   const [rebuildLoading, setRebuildLoading] = useState(false);
+  const [paidFeatures, setPaidFeatures] = useState({
+    genzRoast: false,
+    gentleRoast: false,
+    fullAnalysis: false
+  });
 
   const handlePremiumClick = () => {
     setShowPremium(true);
@@ -63,6 +68,21 @@ export default function Home() {
     
     // Save the PDF
     pdf.save(`resume-${version.toLowerCase().replace(/\s+/g, '-')}.pdf`);
+  };
+
+  const handlePayment = async (productType: string) => {
+    try {
+      const response = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productType })
+      });
+      
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error('Payment error:', error);
+    }
   };
 
   const handleUpload = async () => {
@@ -118,19 +138,21 @@ export default function Home() {
             className={roastMode === 'savage' ? 'active' : ''}
             onClick={() => setRoastMode('savage')}
           >
-            💀 Savage Brutal
+            💀 Savage Brutal (FREE)
           </button>
           <button 
-            className={roastMode === 'genz' ? 'active' : ''}
-            onClick={() => setRoastMode('genz')}
+            className={roastMode === 'genz' ? 'active' : 'locked'}
+            onClick={() => paidFeatures.genzRoast ? setRoastMode('genz') : handlePayment('genz-roast')}
+            disabled={!paidFeatures.genzRoast}
           >
-            😭 Chaotic Gen-Z
+            😭 Chaotic Gen-Z {!paidFeatures.genzRoast && '🔒 $2.99'}
           </button>
           <button 
-            className={roastMode === 'gentle' ? 'active' : ''}
-            onClick={() => setRoastMode('gentle')}
+            className={roastMode === 'gentle' ? 'active' : 'locked'}
+            onClick={() => paidFeatures.gentleRoast ? setRoastMode('gentle') : handlePayment('gentle-roast')}
+            disabled={!paidFeatures.gentleRoast}
           >
-            😌 Gentle Comedy
+            😌 Gentle Comedy {!paidFeatures.gentleRoast && '🔒 $2.99'}
           </button>
         </div>
 
@@ -297,10 +319,9 @@ export default function Home() {
             <div className="premium-actions">
               <button 
                 className="premium-buy" 
-                onClick={handleRebuildResume}
-                disabled={rebuildLoading}
+                onClick={() => handlePayment('full-analysis')}
               >
-                {rebuildLoading ? 'Rebuilding...' : 'Test Rebuild (Free)'}
+                Unlock Full Analysis - $7.99 💎
               </button>
               <button className="premium-close" onClick={() => setShowPremium(false)}>Maybe Later</button>
             </div>
