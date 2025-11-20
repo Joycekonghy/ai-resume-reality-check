@@ -115,7 +115,6 @@ export default function Home() {
       setAnalysis(result);
     } catch (error) {
       console.error('Error:', error);
-      alert('Error analyzing resume: ' + error.message);
     }
     setLoading(false);
   };
