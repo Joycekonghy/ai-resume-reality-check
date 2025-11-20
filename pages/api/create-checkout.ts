@@ -23,6 +23,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       price: 299, // $2.99 in cents
       description: 'Kind but comedic feedback on your resume'
     },
+    'basic-analysis': {
+      name: '🎭 Bias Filters + 7-Second Analysis',
+      price: 199, // $1.99 in cents
+      description: 'Unlock hiring manager perspectives and deeper scan analysis'
+    },
     'full-analysis': {
       name: '💎 Full Analysis Unlock',
       price: 799, // $7.99 in cents

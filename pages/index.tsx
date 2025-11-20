@@ -14,6 +14,7 @@ export default function Home() {
   const [paidFeatures, setPaidFeatures] = useState({
     genzRoast: false,
     gentleRoast: false,
+    basicAnalysis: false,
     fullAnalysis: false
   });
 
@@ -143,14 +144,12 @@ export default function Home() {
           <button 
             className={roastMode === 'genz' ? 'active' : 'locked'}
             onClick={() => paidFeatures.genzRoast ? setRoastMode('genz') : handlePayment('genz-roast')}
-            disabled={!paidFeatures.genzRoast}
           >
             😭 Chaotic Gen-Z {!paidFeatures.genzRoast && '🔒 $2.99'}
           </button>
           <button 
             className={roastMode === 'gentle' ? 'active' : 'locked'}
             onClick={() => paidFeatures.gentleRoast ? setRoastMode('gentle') : handlePayment('gentle-roast')}
-            disabled={!paidFeatures.gentleRoast}
           >
             😌 Gentle Comedy {!paidFeatures.gentleRoast && '🔒 $2.99'}
           </button>
@@ -244,12 +243,36 @@ export default function Home() {
 
           <div className="bias-filters">
             <h2>🎭 Hiring Manager Bias Filters</h2>
-            {analysis.biasFilters?.map((filter: any, i: number) => (
-              <div key={i} className="bias-card">
-                <h3>{filter.persona}</h3>
-                <p>{filter.perception}</p>
-              </div>
-            ))}
+            {console.log('Bias filters:', analysis.biasFilters)}
+            {analysis.biasFilters && analysis.biasFilters.length > 0 ? (
+              <>
+                {analysis.biasFilters.slice(0, 3).map((filter: any, i: number) => (
+                  <div key={i} className="bias-card">
+                    <h3>{filter.persona}</h3>
+                    <p>{filter.perception}</p>
+                  </div>
+                ))}
+                {!paidFeatures.basicAnalysis && (
+                  <div className="premium-lock">
+                    <p>🔒 Unlock 6 more hiring manager perspectives</p>
+                    <button 
+                      className="premium-buy" 
+                      onClick={() => handlePayment('basic-analysis')}
+                    >
+                      Unlock All Bias Filters - $1.99 🎭
+                    </button>
+                  </div>
+                )}
+                {paidFeatures.basicAnalysis && analysis.biasFilters.slice(3).map((filter: any, i: number) => (
+                  <div key={i + 3} className="bias-card">
+                    <h3>{filter.persona}</h3>
+                    <p>{filter.perception}</p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>Loading bias filters...</p>
+            )}
           </div>
 
           <div className="first-impression">
@@ -258,10 +281,23 @@ export default function Home() {
               <h3>3-Second Scan:</h3>
               <p>{analysis.firstImpression?.threeSecond}</p>
             </div>
-            <div className="impression-card">
-              <h3>7-Second Scan:</h3>
-              <p>{analysis.firstImpression?.sevenSecond}</p>
-            </div>
+            {!paidFeatures.basicAnalysis ? (
+              <div className="premium-lock impression-card">
+                <h3>7-Second Scan:</h3>
+                <p>🔒 Unlock deeper analysis</p>
+                <button 
+                  className="premium-buy small" 
+                  onClick={() => handlePayment('basic-analysis')}
+                >
+                  Unlock 7-Second Analysis - $1.99 ⚡
+                </button>
+              </div>
+            ) : (
+              <div className="impression-card">
+                <h3>7-Second Scan:</h3>
+                <p>{analysis.firstImpression?.sevenSecond}</p>
+              </div>
+            )}
           </div>
 
           <div className="industry-view">
@@ -282,7 +318,7 @@ export default function Home() {
 
           <div className="cta-section">
             <button className="premium-btn" onClick={handlePremiumClick}>
-              🚀 Fix My Resume - $12 💎
+              🚀 Fix My Resume - $7.99 💎
             </button>
             <p className="premium-features">
               ✨ ATS Format • 🎨 Modern Design • 📊 Industry-Specific • 🎯 Role-Targeted
