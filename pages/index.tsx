@@ -12,10 +12,10 @@ export default function Home() {
   const [rebuiltResume, setRebuiltResume] = useState<any>(null);
   const [rebuildLoading, setRebuildLoading] = useState(false);
   const [paidFeatures, setPaidFeatures] = useState({
-    genzRoast: false,
-    gentleRoast: false,
-    basicAnalysis: false,
-    fullAnalysis: false
+    genzRoast: true, // Free for testing
+    gentleRoast: true, // Free for testing
+    basicAnalysis: true, // Free for testing
+    fullAnalysis: true // Free for testing
   });
 
   const handlePremiumClick = () => {
