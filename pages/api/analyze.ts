@@ -195,6 +195,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(analysis);
   } catch (error) {
     console.error('API Error:', error);
-    res.status(500).json({ error: 'Analysis failed: ' + error.message });
+    res.status(500).json({ error: 'Analysis failed: ' + (error instanceof Error ? error.message : 'Unknown error') });
   }
 }
