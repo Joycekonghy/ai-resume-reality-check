@@ -242,7 +242,6 @@ export default function Home() {
 
           <div className="bias-filters">
             <h2>🎭 Hiring Manager Bias Filters</h2>
-            {console.log('Bias filters:', analysis.biasFilters)}
             {analysis.biasFilters && analysis.biasFilters.length > 0 ? (
               <>
                 {analysis.biasFilters.slice(0, 3).map((filter: any, i: number) => (
